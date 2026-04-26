@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ station.name }} | Školní prohlídka</title>
+    <style>
+        :root { --primary: #3B82F6; --dark: #1F2937; --light: #F3F4F6; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: var(--dark); margin: 0; background: #fff; }
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        
+
+        .header { border-bottom: 2px solid var(--light); padding-bottom: 20px; margin-bottom: 30px; }
+        .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; color: white; margin-right: 8px; font-weight: bold; }
+        .floor-tag { color: var(--primary); font-weight: bold; text-transform: uppercase; font-size: 0.9em; }
+
+
+        .main-image { width: 100%; height: 400px; object-fit: cover; border-radius: 12px; background: #eee; margin-bottom: 20px; }
+
+
+        .section { margin-bottom: 40px; }
+        .section h3 { border-left: 4px solid var(--primary); padding-left: 15px; margin-bottom: 15px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+      
+        .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
+        .card { border: 1px solid #eee; padding: 15px; border-radius: 8px; text-decoration: none; color: inherit; transition: 0.2s; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+
+        @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="{{ url_for('index') }}" style="text-decoration: none; color: var(--primary);">← Zpět na seznam</a>
+
+    <div class="header">
+        <h1>{{ station.name }}</h1>
+        <div class="floor-tag">{{ station.floor_label }} • Místnost {{ station.room_number }}</div>
+        <div style="margin-top: 10px;">
+            {% for cat in station.categories %}
+                <span class="badge" style="background-color: {{ cat.color }}">
+                    {{ cat.icon }} {{ cat.name }}
+                </span>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% if station.primary_image %}
+        <img src="{{ url_for('static', filename='uploads/' + station.primary_image.filename) }}" class="main-image" alt="{{ station.name }}">
+    {% else %}
+        <div class="main-image" style="display: flex; align-items: center; justify-content: center;">
+            <span style="font-size: 4em;">🏫</span>
+        </div>
+    {% endif %}
+
+    <div class="section">
+        <h3>O stanovišti</h3>
+        <p>{{ station.description }}</p>
+    </div>
+
+    <div class="grid">
+        <div class="section">
+            <h3>Vybavení</h3>
+            <p>{{ station.equipment or 'Informace o vybavení nejsou k dispozici.' }}</p>
+        </div>
+        <div class="section">
+            <h3>Projekty</h3>
+            <p>{{ station.projects or 'Momentálně zde neprobíhají žádné veřejné projekty.' }}</p>
+        </div>
+    </div>
+
+    <div class="section" style="background: var(--light); padding: 20px; border-radius: 8px;">
+        <h3>Kontakt</h3>
+        <p><strong>Odpovědná osoba:</strong> {{ station.contact_person }}</p>
+        {% if station.contact_email %}
+            <p><strong>E-mail:</strong> <a href="mailto:{{ station.contact_email }}">{{ station.contact_email }}</a></p>
+        {% endif %}
+    </div>
+
+    {% if related %}
+    <div class="section">
+        <h3>Mohlo by vás také zajímat</h3>
+        <div class="related-grid">
+            {% for rel in related %}
+                <a href="{{ url_for('station_detail', station_id=rel.id) }}" class="card">
+                    <strong>{{ rel.name }}</strong><br>
+                    <small>{{ rel.floor_label }} • {{ rel.room_number }}</small>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+</body>
+</html>
