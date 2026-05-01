@@ -1,0 +1,64 @@
+<div class="editor-container">
+    <a href="{{ url_for('admin') }}">← Zpět na přehled</a>
+    
+    <h1>Upravit stanoviště</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+        <div>
+            <label>Název stanoviště</label>
+            <input type="text" name="name" value="{{ station.name }}" required>
+        </div>
+
+        <div>
+            <label>Patro (0 = Přízemí)</label>
+            <input type="number" name="floor" value="{{ station.floor }}">
+        </div>
+
+        <div>
+            <label>Číslo místnosti</label>
+            <input type="text" name="room_number" value="{{ station.room_number }}">
+        </div>
+
+        <div>
+            <label>Popis</label>
+            <textarea name="description" rows="6">{{ station.description }}</textarea>
+        </div>
+
+        <div>
+            <label>Aktuální galerie (označte pro smazání)</label>
+            <div>
+                {% for img in station.images %}
+                <div style="display: inline-block; margin: 10px;">
+                    <img src="{{ url_for('static', filename='uploads/' + img.filename) }}" width="100"><br>
+                    <input type="checkbox" name="delete_photos" value="{{ img.id }}"> Smazat
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+
+
+<div>
+    <label>Kategorie</label>
+    <div>
+        {% for category in all_categories %}
+        <div style="display: inline-block; margin: 10px;">
+            <span>{{ category.name }}</span><br>
+            <input type="checkbox" name="categories" value="{{ category.id }}" 
+                {% if category.id in station_category_ids %} checked {% endif %}>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+        <div>
+            <label>Přidat nové fotografie</label>
+            <input type="file" name="new_photos" multiple accept="image/*">
+        </div>
+
+        <br>
+        <button type="submit">Uložit všechny změny</button>
+    </form>
+</div>
