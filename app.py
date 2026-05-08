@@ -38,7 +38,7 @@ def load_user(user_id):
 @app.route('/')
 def index():
     stations = Station.query.filter_by(is_active=True).order_by(Station.order).all()
-    return render_template('index.html', stations=stations)
+    return render_template('visitor/index.html', stations=stations)
 
 @app.route('/station/<int:station_id>')
 def station_detail(station_id):
