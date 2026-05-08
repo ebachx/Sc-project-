@@ -1,0 +1,15 @@
+id
+name
+room_numbe
+floor
+descriptio
+equipment
+projects
+contact_pe
+contact_em
+qr_code
+is_active
+order
+created_at
+updated_at
+categories

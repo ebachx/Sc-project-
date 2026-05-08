@@ -1,0 +1,53 @@
+Technická dokumentace — 8. 5.
+Opravené chyby
+
+Hodnota login_manager.login_view byla změněna z 'login' na 'admin_login'.
+
+Flask nedokázal najít správný route pro přesměrování neautorizovaných uživatelů, což způsobovalo pád aplikace.
+
+Byly odstraněny nepoužívané importy.
+Přidané routy
+GET/POST /admin/station/new
+
+Route pro vytvoření nové stanice.
+
+Funkcionalita zahrnuje:
+
+ukládání kategorií,
+nahrávání fotografií.
+
+Fotografie se ukládají v samostatném commitu po vytvoření stanice, protože model StationImage vyžaduje station.id, které je dostupné až po prvním commitu.
+
+/admin/station/delete/<id>
+
+Route pro odstranění stanice včetně fyzického odstranění souborů z úložiště.
+
+Veřejný route pro návštěvníky
+
+QR kód obsahuje URL adresu veřejné stránky stanice. Po naskenování dojde k automatickému přesměrování na odpovídající stránku.
+
+GET /admin/station/<id>/qr
+
+Generuje PNG soubor s QR kódem a umožňuje jeho stažení pro další použití.
+
+URL adresa použitá v QR kódu je získávána:
+
+z environmentální proměnné BASE_URL,
+nebo automaticky pomocí request.host_url.
+Nové soubory
+new_station.html
+
+Nově vytvořená šablona formuláře pro vytváření stanic.
+
+Styly zatím nebyly implementovány — plánuje se jejich doplnění v pozdější fázi vývoje.
+
+Další informace
+
+QR kódy nejsou ukládány jako fyzické soubory.
+
+Generují se dynamicky při každém requestu, protože:
+
+není potřeba uchovávat je trvale v systému,
+při změně domény lze okamžitě generovat nové QR kódy bez další konfigurace.
+
+Flask automaticky rozpoznává aktuální doménu pomocí funkce request.host_url.

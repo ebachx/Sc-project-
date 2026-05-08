@@ -23,7 +23,14 @@
             <label>Popis</label>
             <textarea name="description" rows="6">{{ station.description }}</textarea>
         </div>
-
+         <div>
+            <label>Kontaktní osoba</label>
+            <textarea name="contact_person" rows="6">{{ station.contact_person }}</textarea>
+        </div>
+        <div>
+            <label>Kontaktní email</label>
+            <textarea name="contact_email" rows="6">{{ station.contact_email }}</textarea>
+        </div>
         <div>
             <label>Aktuální galerie (označte pro smazání)</label>
             <div>
@@ -61,4 +68,7 @@
         <br>
         <button type="submit">Uložit všechny změny</button>
     </form>
+    <a href="{{ url_for('download_qr', station_id=station.id) }}">
+        <button style="margin-top: 20px;">Stáhnout QR kód</button>
+</a>
 </div>

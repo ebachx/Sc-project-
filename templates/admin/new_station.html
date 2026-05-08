@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nové stanoviště | Admin</title>
+</head>
+<body>
+
+    <a href="{{ url_for('admin') }}">← Zpět na přehled</a>
+    <h1>Nové stanoviště</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST" enctype="multipart/form-data">
+
+        <div>
+            <label for="name">Název stanoviště</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+
+        <div>
+            <label for="floor">Patro (0 = Přízemí, -1 = Suterén)</label>
+            <input type="number" id="floor" name="floor" value="0">
+        </div>
+
+        <div>
+            <label for="room_number">Číslo místnosti</label>
+            <input type="text" id="room_number" name="room_number">
+        </div>
+
+        <div>
+            <label for="description">Popis</label>
+            <textarea id="description" name="description" rows="5"></textarea>
+        </div>
+
+        <div>
+            <label for="equipment">Vybavení</label>
+            <textarea id="equipment" name="equipment" rows="4"></textarea>
+        </div>
+
+        <div>
+            <label for="projects">Projekty</label>
+            <textarea id="projects" name="projects" rows="4"></textarea>
+        </div>
+
+        <div>
+            <label for="contact_person">Kontaktní osoba</label>
+            <input type="text" id="contact_person" name="contact_person">
+        </div>
+
+        <div>
+            <label for="contact_email">Kontaktní e-mail</label>
+            <input type="email" id="contact_email" name="contact_email">
+        </div>
+
+        <div>
+            <label>Kategorie</label>
+            <div>
+                {% for category in all_categories %}
+                <label>
+                    <input type="checkbox" name="categories" value="{{ category.id }}">
+                    {{ category.icon }} {{ category.name }}
+                </label>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div>
+            <label for="photos">Fotografie</label>
+            <input type="file" id="photos" name="new_photos" multiple accept="image/*">
+        </div>
+
+        <div>
+            <button type="submit">Vytvořit stanoviště</button>
+            <a href="{{ url_for('admin') }}">Zrušit</a>
+        </div>
+
+    </form>
+
+</body>
+</html>
